@@ -63,7 +63,7 @@ class FraudDetection:
 
 if __name__ == "__main__":
 
-
+    pass
     # To predict on new sample data:
     # sample_data = pd.DataFrame(...)  # Your new sample data as a DataFrame
     # predictions = fraud_detector.make_prediction(sample_data)
