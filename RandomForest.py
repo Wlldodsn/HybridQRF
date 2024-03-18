@@ -31,8 +31,9 @@ class FraudDetection:
         print(classification_report(y_test, y_pred))
         return roc_auc_score(y_test, y_pred)
 
-    def evaluate_feature_importance(self, n_features_to_select):
+    def evaluate_feature_importance(self, n_features_to_select, threshold):
         feature_indices = np.argsort(self.feature_importances)[::-1]
+        optimal_num_features = n_features_to_select
         for i in range(1, n_features_to_select + 1):
             selected_features = feature_indices[:i]
             X_reduced = self.X[:, selected_features]
@@ -40,6 +41,14 @@ class FraudDetection:
             mean_score = np.mean(scores)
             std_score = np.std(scores)
             print(f"Top {i} features: AUC = {mean_score:.4f} (+/- {std_score:.4f})")
+            if (mean_score > threshold):
+                optimal_num_features = i
+                break
+        final_selected_features = feature_indices[:optimal_num_features]
+        important_feature_names = self.data.columns[final_selected_features]
+        trimmed_data = self.data.iloc[:, final_selected_features]
+        return trimmed_data, important_feature_names, optimal_num_features
+            
 
     def save_model(self, model_file):
         joblib.dump(self.model, model_file)
@@ -54,7 +63,7 @@ class FraudDetection:
 
 if __name__ == "__main__":
     # Path to your CSV file
-    csv_file_path = 'path_to_csv_file.csv'
+    csv_file_path = 'credit.csv'
     
     # Create an instance of the class
     fraud_detector = FraudDetection(csv_file_path)
