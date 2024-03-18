@@ -62,24 +62,7 @@ class FraudDetection:
         return self.model.predict(sample_data)
 
 if __name__ == "__main__":
-    # Path to your CSV file
-    csv_file_path = 'credit.csv'
-    
-    # Create an instance of the class
-    fraud_detector = FraudDetection(csv_file_path)
-    
-    # Preprocess data
-    fraud_detector.preprocess_data()
-    
-    # Train the model and print out classification report
-    auc_score = fraud_detector.train_model()
-    print(f"Initial AUC Score: {auc_score}")
 
-    # Evaluate the importance of features based on cross-validated performance
-    fraud_detector.evaluate_feature_importance(n_features_to_select=10)  # Adjust this number as needed
-    
-    # Save the model
-    fraud_detector.save_model('rf_model.pkl')
 
     # To predict on new sample data:
     # sample_data = pd.DataFrame(...)  # Your new sample data as a DataFrame
